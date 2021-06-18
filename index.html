@@ -33,8 +33,12 @@
         alert("no data propery provided in queryParams, cannot display plot");
       } else {
         const data = JSON.parse(atob(queryParams.data));
-        const layout = queryParams?.layout ?? {};
-        const config = queryParams?.config ?? { responsive: true };
+        const layout =
+          "layout" in queryParams ? JSON.parse(atob(queryParams.layout)) : {};
+        const config =
+          "config" in queryParams
+            ? JSON.parse(atob(queryParams.config))
+            : { responsive: true };
         Plotly.newPlot("plotly-plot", data, layout, config);
       }
     </script>
