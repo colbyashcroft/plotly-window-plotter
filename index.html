@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://cdn.plot.ly/plotly-2.0.0.min.js"></script>
+    <title>Plotly Plotter</title>
+  </head>
+  <body>
+    <div id="plotly-plot"></div>
+    =
+    <script>
+      const parseQuery = (queryString) => {
+        var query = {};
+        var pairs = (
+          queryString[0] === "?" ? queryString.substr(1) : queryString
+        ).split("&");
+        for (var i = 0; i < pairs.length; i++) {
+          var pair = pairs[i].split("=");
+          query[decodeURIComponent(pair[0])] = decodeURIComponent(
+            pair[1] || ""
+          );
+        }
+        return query;
+      };
+
+      const getQueryParams = () => {
+        const searchField = document.location.search;
+        const queryParams = parseQuery(searchField);
+        return queryParams;
+      };
+
+      queryParams = getQueryParams();
+      if (!("data" in queryParams)) {
+        alert("no data propery provided in queryParams, cannot display plot");
+      } else {
+        const data = JSON.parse(atob(queryParams.data));
+        if ("layout" in queryParams) {
+          const layout = JSON.parse(atob(queryParams.layout));
+          Plotly.newPlot("plotly-plot", data, layout);
+        } else {
+          Plotly.newPlot("plotly-plot", data);
+        }
+      }
+    </script>
+  </body>
+</html>
